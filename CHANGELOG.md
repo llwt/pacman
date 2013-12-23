@@ -1,3 +1,9 @@
+## v1.1.2:
+
+### Bug
+
+- Fix bug introduced by pkgbuild_src change
+
 ## v1.1.1:
 
 - Added configurable pgkbuild_src

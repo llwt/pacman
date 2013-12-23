@@ -56,7 +56,7 @@ action :build do
 
     if new_resource.pkgbuild_src
       Chef::Log.debug("Replacing PKGBUILD with custom version")
-      pkg_src_file = new_resource.pkgbuild_src.is_a? String ? new_resource.pkgbuild_src : 'PKGBUILD'
+      pkg_src_file = new_resource.pkgbuild_src.is_a?(String) ? new_resource.pkgbuild_src : 'PKGBUILD'
       pkgb = cookbook_file "#{new_resource.builddir}/#{new_resource.name}/PKGBUILD" do
         source pkg_src_file
         owner "root"
