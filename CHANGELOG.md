@@ -1,3 +1,8 @@
+## v1.1.4:
+
+### Bug
+- Fix ruby syntax error
+
 ## v1.1.3:
 
 - Allow chef packages to have .pkg.tar and .pkg.tar.xz formats

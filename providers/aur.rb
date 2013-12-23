@@ -88,11 +88,11 @@ action :build do
 
     Chef::Log.debug("Building package #{new_resource.name}")
     unless ::File.exists?(aurfile) || ::File.exists?("#{aurfile}.xz")
-        em = execute "makepkg -s --asroot" do
+      em = execute "makepkg -s --asroot" do
         cwd ::File.join(new_resource.builddir, new_resource.name)
         action :nothing
-        end
-        em.run_action(:run)
+      end
+      em.run_action(:run)
     end
     new_resource.updated_by_last_action(true)
   end
@@ -102,8 +102,8 @@ action :install do
   unless @aurpkg.exists
     get_pkg_version
     pkg_file = "#{new_resource.builddir}/#{new_resource.name}/#{new_resource.name}-#{new_resource.version}.pkg.tar"
-    unless ::File.exists(pkg_file) do
-        pkg_file = "#{pkg_file}.xz"
+    unless ::File.exists(pkg_file)
+      pkg_file = "#{pkg_file}.xz"
     end
     execute "install AUR package #{new_resource.name}-#{new_resource.version}" do
       command "pacman -U --noconfirm  --noprogressbar #{pkg_file}"
