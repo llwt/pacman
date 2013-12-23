@@ -1,3 +1,7 @@
+## v1.1.1:
+
+- Added configurable pgkbuild_src
+
 ## v1.1.0:
 
 ### Bug
