@@ -102,7 +102,7 @@ action :install do
   unless @aurpkg.exists
     get_pkg_version
     pkg_file = "#{new_resource.builddir}/#{new_resource.name}/#{new_resource.name}-#{new_resource.version}.pkg.tar"
-    unless ::File.exists(pkg_file)
+    unless ::File.exists?(pkg_file)
       pkg_file = "#{pkg_file}.xz"
     end
     execute "install AUR package #{new_resource.name}-#{new_resource.version}" do
