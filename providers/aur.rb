@@ -57,7 +57,7 @@ action :build do
     if new_resource.pkgbuild_src
       Chef::Log.debug("Replacing PKGBUILD with custom version")
       pkgb = cookbook_file "#{new_resource.builddir}/#{new_resource.name}/PKGBUILD" do
-        source "PKGBUILD"
+        source new_resource.pkgbuild_src
         owner "root"
         group "root"
         mode 0644
