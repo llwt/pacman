@@ -23,11 +23,11 @@ include Chef::Mixin::ShellOut
 
 action :build do
   get_pkg_version
-  aurfile = "#{new_resource.builddir}/#{new_resource.name}/#{new_resource.name}-#{new_resource.version}.pkg.tar.xz"
+  aurfile = "#{new_resource.builddir}/#{new_resource.name}/#{new_resource.name}-#{new_resource.version}.pkg.tar"
   package_namespace = new_resource.name[0..1]
 
   Chef::Log.debug("Checking for #{aurfile}")
-  unless ::File.exists?(aurfile)
+  unless ::File.exists?(aurfile) || ::File.exists?("#{aurfile}.xz")
     Chef::Log.debug("Creating build directory")
     d = directory new_resource.builddir do
       owner "root"
@@ -87,12 +87,13 @@ action :build do
     end
 
     Chef::Log.debug("Building package #{new_resource.name}")
-    em = execute "makepkg -s --asroot" do
-      cwd ::File.join(new_resource.builddir, new_resource.name)
-      creates aurfile
-      action :nothing
+    unless ::File.exists?(aurfile) || ::File.exists?("#{aurfile}.xz")
+        em = execute "makepkg -s --asroot" do
+        cwd ::File.join(new_resource.builddir, new_resource.name)
+        action :nothing
+        end
+        em.run_action(:run)
     end
-    em.run_action(:run)
     new_resource.updated_by_last_action(true)
   end
 end
@@ -100,8 +101,12 @@ end
 action :install do
   unless @aurpkg.exists
     get_pkg_version
+    pkg_file = "#{new_resource.builddir}/#{new_resource.name}/#{new_resource.name}-#{new_resource.version}.pkg.tar"
+    unless ::File.exists(pkg_file) do
+        pkg_file = "#{pkg_file}.xz"
+    end
     execute "install AUR package #{new_resource.name}-#{new_resource.version}" do
-      command "pacman -U --noconfirm  --noprogressbar #{new_resource.builddir}/#{new_resource.name}/#{new_resource.name}-#{new_resource.version}.pkg.tar.xz"
+      command "pacman -U --noconfirm  --noprogressbar #{pkg_file}"
     end
     new_resource.updated_by_last_action(true)
   end

@@ -1,3 +1,7 @@
+## v1.1.3:
+
+- Allow chef packages to have .pkg.tar and .pkg.tar.xz formats
+
 ## v1.1.2:
 
 ### Bug
